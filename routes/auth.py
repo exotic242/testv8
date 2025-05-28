@@ -123,3 +123,17 @@ def reset_password_token(token):
         return redirect("/login")
 
     return render_template('reset_password.html')
+
+
+def send_reset_email(email, token):
+    from flask import url_for
+    from flask_mail import Message
+    from app import mail
+
+    reset_link = url_for('auth.reset_password_token', token=token, _external=True)
+    msg = Message("Password Reset Request", recipients=[email])
+    msg.body = f"Click the link to reset your password: {reset_link}"
+    try:
+        mail.send(msg)
+    except Exception as e:
+        print(f"Failed to send reset email: {e}")
