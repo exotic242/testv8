@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% block title %}Admin Logs{% endblock %}{% block content %}
+<h2>Admin Logs</h2>
+
+<form method="get">
+  <label>Filter by status:</label>
+  <select name="status">
+    <option value="">All</option>
+    <option value="verified">Verified</option>
+    <option value="flagged">Flagged</option>
+    <option value="started">Started</option>
+  </select>
+  <button type="submit">Filter</button>
+</form>
+
+<a href="{{ url_for('admin.export_logs') }}">Export All</a>
+<a href="{{ url_for('admin.export_logs', status='verified') }}">Export Verified</a>
+<a href="{{ url_for('admin.export_logs', status='flagged') }}">Export Flagged</a>
+
+<table border="1">
+  <tr>
+    {% for key in logs[0].keys() %}
+      <th>{{ key }}</th>
+    {% endfor %}
+  </tr>
+  {% for log in logs %}
+  <tr>
+    {% for value in log.values() %}
+      <td>{{ value }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

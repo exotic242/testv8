@@ -1,0 +1,16 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<div style='max-width:600px;margin:auto;'>
+<h2>Welcome, {{ name }}</h2>
+<p>Total Hours Logged: {{ total_hours }}</p>
+<h3>Badges Earned:</h3>
+<ul>
+  {% for badge in badges %}
+    <li>{{ badge }}</li>
+  {% else %}
+    <li>No badges earned yet.</li>
+  {% endfor %}
+</ul>
+</div>
+{% endblock %}

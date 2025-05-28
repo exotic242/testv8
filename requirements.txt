@@ -1,0 +1,8 @@
+flask
+python-dotenv
+gspread
+oauth2client
+user-agents
+gunicorn
+Flask-Mail
+itsdangerous

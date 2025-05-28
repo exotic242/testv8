@@ -1,0 +1,10 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<div style='max-width:600px;margin:auto;'>
+<h2>Admin Dashboard</h2>
+<p>Total Hours Logged by All Students: {{ total_hours }}</p>
+<a href="/export-logs">Export Logs (CSV)</a><br>
+<a href="/audit-log">View Audit Log</a>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h2>Calendar View</h2>
+<ul>
+  {% for log in logs %}
+    <li>{{ log.date }} — {{ log.activity }} ({{ log.hours }} hrs)</li>
+  {% else %}
+    <li>No logs yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

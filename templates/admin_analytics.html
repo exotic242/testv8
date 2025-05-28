@@ -1,0 +1,76 @@
+{% extends "base.html" %}{% block title %}Analytics{% endblock %}
+{% block content %}
+<h2 class="text-light">Analytics Dashboard</h2>
+
+<canvas id="hoursChart" class="mb-4"></canvas>
+<canvas id="activityChart" class="mb-4"></canvas>
+<canvas id="timelineChart" class="mb-4"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const textColor = 'rgba(255, 255, 255, 0.87)';
+const borderColor = 'rgba(255, 255, 255, 0.2)';
+const bgColor = '#212529';
+
+document.body.classList.add('bg-dark', 'text-light');
+
+const hoursData = {
+    labels: {{ hours_by_student.keys() | list | tojson }},
+    datasets: [{
+        label: 'Hours by Student',
+        data: {{ hours_by_student.values() | list | tojson }},
+        backgroundColor: 'rgba(0, 123, 255, 0.7)',
+        borderColor: borderColor,
+        borderWidth: 1
+    }]
+};
+
+const activityData = {
+    labels: {{ activity_counts.keys() | list | tojson }},
+    datasets: [{
+        label: 'Activity Types',
+        data: {{ activity_counts.values() | list | tojson }},
+        backgroundColor: ['#ff6384','#36a2eb','#cc65fe','#ffce56','#4bc0c0'],
+        borderColor: borderColor,
+        borderWidth: 1
+    }]
+};
+
+const timelineData = {
+    labels: {{ daily_counts.keys() | list | tojson }},
+    datasets: [{
+        label: 'Logs Per Day',
+        data: {{ daily_counts.values() | list | tojson }},
+        fill: false,
+        borderColor: '#17a2b8',
+        tension: 0.1
+    }]
+};
+
+new Chart(document.getElementById('hoursChart'), {
+    type: 'bar',
+    data: hoursData,
+    options: {
+        plugins: { legend: { labels: { color: textColor } } },
+        scales: { x: { ticks: { color: textColor } }, y: { ticks: { color: textColor } } }
+    }
+});
+
+new Chart(document.getElementById('activityChart'), {
+    type: 'pie',
+    data: activityData,
+    options: {
+        plugins: { legend: { labels: { color: textColor } } }
+    }
+});
+
+new Chart(document.getElementById('timelineChart'), {
+    type: 'line',
+    data: timelineData,
+    options: {
+        plugins: { legend: { labels: { color: textColor } } },
+        scales: { x: { ticks: { color: textColor } }, y: { ticks: { color: textColor } } }
+    }
+});
+</script>
+{% endblock %}

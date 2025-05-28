@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Admin Audit Log</h2>
+  {% if logs %}
+    <table>
+      <thead>
+        <tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td>{{ log.timestamp }}</td>
+          <td>{{ log.admin_email }}</td>
+          <td>{{ log.action_type }}</td>
+          <td>{{ log.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No audit logs recorded.</p>
+  {% endif %}
+{% endblock %}

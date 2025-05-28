@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h2>Leaderboard</h2>
+<ul id="leaderboard">
+  <li>Loading...</li>
+</ul>
+<script>
+  fetch('/leaderboard-data')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('leaderboard');
+      container.innerHTML = '';
+      data.forEach(entry => {
+        const li = document.createElement('li');
+        li.textContent = entry.name + ": " + entry.total_hours + " hours";
+        container.appendChild(li);
+      });
+    });
+</script>
+{% endblock %}
