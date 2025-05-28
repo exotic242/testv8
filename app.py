@@ -2,7 +2,7 @@
 from flask import Flask
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
-from routes.auth import auth_bp
+from routes.auth import auth_bp_bp
 from routes.student import student_bp
 from routes.admin import admin_bp
 from routes.public import public_bp

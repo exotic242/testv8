@@ -37,6 +37,8 @@ def send_email(to, subject, body):
 import secrets
 from flask import url_for
 from flask_mail import Message
+from app import mail  # mail must be initialized in app.py
+
 reset_tokens = {}
 
 def generate_reset_token(email):
@@ -46,6 +48,15 @@ def generate_reset_token(email):
 
 def get_email_by_token(token):
     return reset_tokens.get(token)
+
+def send_reset_email(email, token):
+    reset_link = url_for('auth.reset_password_token', token=token, _external=True)
+    msg = Message("Password Reset Request", recipients=[email])
+    msg.body = f"Click the link to reset your password: {reset_link}"
+    try:
+        mail.send(msg)
+    except Exception as e:
+        print(f"Failed to send reset email: {e}")
 
 
 from functools import wraps

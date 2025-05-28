@@ -2,9 +2,9 @@ from flask import Blueprint, render_template, request, redirect, session, flash,
 from werkzeug.security import generate_password_hash, check_password_hash
 from sheets_api import append_row, find_by_email
 
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
-@auth.route('/register', methods=['GET', 'POST'])
+@auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         name = request.form['name']
@@ -23,7 +23,7 @@ def register():
         return redirect('/login')
     return render_template('register.html')
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -59,7 +59,7 @@ def login_required(role=None):
         return wrapper
     return decorator
 
-@auth.route('/logout')
+@auth_bp.route('/logout')
 def logout():
     session.pop('user', None)
     flash("Logged out successfully.", "success")
@@ -78,7 +78,7 @@ def send_registration_email(email, name):
         print("Email sending failed:", e)
 
 
-@auth.route('/request-reset', methods=['GET', 'POST'])
+@auth_bp.route('/request-reset', methods=['GET', 'POST'])
 def request_reset():
     if request.method == 'POST':
         email = request.form['email']
@@ -94,7 +94,7 @@ def request_reset():
     return render_template('request_reset.html')
 
 
-@auth.route('/reset-password/<token>', methods=['GET', 'POST'])
+@auth_bp.route('/reset-password/<token>', methods=['GET', 'POST'])
 def reset_password_token(token):
     from utils import get_email_by_token
     email = get_email_by_token(token)
@@ -123,17 +123,3 @@ def reset_password_token(token):
         return redirect("/login")
 
     return render_template('reset_password.html')
-
-
-def send_reset_email(email, token):
-    from flask import url_for
-    from flask_mail import Message
-    from app import mail
-
-    reset_link = url_for('auth.reset_password_token', token=token, _external=True)
-    msg = Message("Password Reset Request", recipients=[email])
-    msg.body = f"Click the link to reset your password: {reset_link}"
-    try:
-        mail.send(msg)
-    except Exception as e:
-        print(f"Failed to send reset email: {e}")
